@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fs-dev-sim.fullname" . }}
+  labels:
+    {{- include "fs-dev-sim.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "fs-dev-sim.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "fs-dev-sim.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "fs-dev-sim.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+          - mountPath: /dev_sim
+            name: vol0          
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+          - name: STATION_ID
+            value: "73"
+          - name: STATION_ABBR
+            value: CBR
+          - name: DEVICE_TYPE
+            value: "49"
+          - name: DEVICE_SEQ_NO
+            value: "3231"
+          - name: EQUIPMENT_ID
+            value: G01
+          - name: SC_IP_ADDR
+            value: 192.168.1.180
+          - name: SCFO_IP_ADDR
+            value: 192.168.1.180
+          - name: MQTT_BROKER_IP_ADDRESS
+            value: 192.168.1.140
+          - name: MQTT_BROKER_PORT
+            value: "31002"
+      volumes:
+      - name: vol0
+        persistentVolumeClaim:
+          claimName: gnss-sim
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
