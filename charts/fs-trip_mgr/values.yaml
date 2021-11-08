@@ -8,7 +8,7 @@ image:
   repository: 10.8.0.1:30003/lta_lib/alpine_fs_trip_mgr
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.0"
+  tag: "2.2"
 
 imagePullSecrets: []
 nameOverride: ""
