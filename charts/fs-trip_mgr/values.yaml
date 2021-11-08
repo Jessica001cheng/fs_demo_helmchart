@@ -1,11 +1,11 @@
-# Default values for fs-nginx.
+# Default values for fs-gnss-sim.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: 10.8.0.1:30003/lta_lib/alpine_fs_nginx
+  repository: 10.8.0.1:30003/lta_lib/alpine_fs_trip_mgr
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "2.0"
@@ -37,9 +37,8 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: NodePort 
+  type: ClusterIP
   port: 80
-  nodePort: 31001
 
 ingress:
   enabled: false
