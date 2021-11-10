@@ -48,7 +48,7 @@ spec:
           - name: DEVICE_SEQ_NO
             value: "3231"
           - name: EQUIPMENT_ID
-            value: G01
+            value: G02
           - name: MQTT_BROKER_IP_ADDRESS
             value: 10.8.0.6
           - name: MQTT_BROKER_PORT
