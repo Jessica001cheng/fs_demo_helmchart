@@ -8,7 +8,7 @@ image:
   repository: 10.8.0.1:30003/lta_lib/alpine_fs_mqtt_broker
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.0"
+  tag: "1.2"
 
 imagePullSecrets: []
 nameOverride: ""
